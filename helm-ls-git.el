@@ -698,7 +698,10 @@ Do nothing when `helm-source-ls-git-buffers' is not member of
   (and (memq 'helm-source-ls-git-buffers helm-ls-git-default-sources)
        (helm-make-source "Buffers in git project" 'helm-source-buffers
          :header-name #'helm-ls-git-header-name
-         :buffer-list (lambda () (helm-browse-project-get-buffers
+         :buffer-list (lambda () (let ((root-dir (helm-ls-git-root-dir)))
+				   (if root-dir
+				       (helm-browse-project-get-buffers root-dir)))
+			(helm-browse-project-get-buffers
                                   (helm-ls-git-root-dir)))
          :keymap helm-ls-git-buffer-map)))
 
